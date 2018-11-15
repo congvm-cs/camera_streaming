@@ -13,12 +13,14 @@ class VideoCamera(object):
             
         self.qrscanner = QRScanner()
 
+
     def __del__(self):
         self.video.release()
     
+
     def get_frame(self):
         _, image = self.video.read()
-        image = self.qrscanner.scan(image)
+        image = self.qrscanner.scan_return_image(image)
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
         # so we must encode it into JPEG in order to correctly display the
         # video stream.
