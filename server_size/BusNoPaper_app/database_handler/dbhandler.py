@@ -27,7 +27,7 @@ class BusNoPaperDB(object):
                                             database=self.database)
 
             cursor = myConnection.cursor()
-            
+
             _sql = "INSERT INTO user( \
                             id, \
                             username, \
@@ -40,21 +40,84 @@ class BusNoPaperDB(object):
                             "null",
                             "tinna",
                             "1234",
-                            "tinna{}".format(GenPasswd2()),
+                            "tinna{}".format(self.gen_QRcode2()),
                             "0",
                             40000,
                             "tinna@gmail.com")
             cursor.execute(_sql)
             myConnection.commit()
-        except Exception as e:
+            myConnection.close()
+        except:
             raise('Insert fail')
 
-# Simple routine to run a query on a database and print the results:
-def doQuery(conn) :
-    cur = conn.cursor()
 
-    cur.execute( "SELECT fname, lname FROM employee" )
+    def update_password(self, id, password):
+        try:
+            myConnection = pymysql.connect( host=self.hostname, 
+                                            user=self.username, 
+                                            passwd=self.password, 
+                                            database=self.database)
 
-    for firstname, lastname in cur.fetchall() :
-        print firstname, lastname
+            cursor = myConnection.cursor()
+            _sql = "UPDATE user                     \
+                        SET password = \"{}\",      \
+                    WHERE id={};".format(password, id)
 
+            cursor.execute(_sql)
+            myConnection.commit()
+
+        except:
+            raise('Update fail')
+
+
+    def update_qrcode(self, id):
+        try:
+            myConnection = pymysql.connect( host=self.hostname, 
+                                            user=self.username, 
+                                            passwd=self.password, 
+                                            database=self.database)
+
+            cursor = myConnection.cursor()
+            _sql = "UPDATE user                 \
+                        SET qrcode = \"{}\",   \
+                    WHERE id={};".format(self.gen_QRcode2(), id)
+
+            cursor.execute(_sql)
+            myConnection.commit()
+            myConnection.close()
+        except:
+            raise('Update fail')
+
+
+    def update_money(self, id, money):
+        try:
+            myConnection = pymysql.connect( host=self.hostname, 
+                                            user=self.username, 
+                                            passwd=self.password, 
+                                            database=self.database)
+
+            cursor = myConnection.cursor()
+            _sql = "UPDATE user                 \
+                        SET money = {},   \
+                    WHERE id={};".format(money, id)
+
+            cursor.execute(_sql)
+            myConnection.commit()
+            myConnection.close()
+        except:
+            raise('Update fail')
+
+    def query_info(self, id):
+        myConnection = pymysql.connect( host=self.hostname, 
+                                        user=self.username, 
+                                        passwd=self.password, 
+                                        database=self.database)
+
+        cursor = myConnection.cursor()
+        _sql = "SELECT * FROM user          \
+                WHERE id={};".format(id)
+
+        cursor.execute(_sql)
+        _response = cursor.fetchall()
+        myConnection.close()
+        return _response
