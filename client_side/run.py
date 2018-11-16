@@ -7,7 +7,7 @@ import time
 import threading
 from threading import Thread
 import pygame
-from playsound import playsound
+# from playsound import playsound
 
 URL = 'http://10.2.72.39:15000/api/charge'
 
@@ -46,11 +46,12 @@ def request(code):
     dict_res = eval(str_res)
 
     status = dict_res['status']
-
+    print(status)
     if status == 'false':
         say_no()
     
     if status == 'true':
+	print("HI")
         say_yes()
     
 
