@@ -73,13 +73,34 @@ def signin():
 
 @user_bp.route("/api/signup", methods=["POST"])
 def signup():
-    _code = __generate()
+    try:
+        _query_data = request.json
+        # Generate QRCODE
+        _code = __generate()
+        db_handler.insert(  username=_query_data['username'], 
+                            password=_query_data['password'],
+                            qrcode=_code,
+                            usertype=0, 
+                            money=0,
+                            email=_query_data['email'])
+        
+        print(1)
+        _response = {
+                    "status": "true",
+                    "status_message": "register successfully",
+                    "content":{
+                    }
+                }
+        return jsonify(_response)
 
-    _response = {
-        "code": _code
-    }
-    return jsonify(_response)
-
+    except Exception as e:
+        _response = {
+                    "status": "false",
+                    "status_message": str(e),
+                    "content":{
+                    }
+                }
+        return jsonify(_response)
 
 @user_bp.route("/api/get_user_info", methods=["POST"])
 def get_user_info():

@@ -36,12 +36,12 @@ class BusNoPaperDB(object):
                             email) \
                         VALUES({}, \"{}\", \"{}\", \"{}\", \"{}\", {}, \"{}\");".format(
                             "null",
-                            "tinna",
-                            "1234",
-                            "tinna{}".format(self.gen_QRcode2()),
-                            "0",
-                            40000,
-                            "tinna@gmail.com")
+                            username,
+                            password,
+                            qrcode,
+                            usertype,
+                            money,
+                            email)
             cursor.execute(_sql)
             myConnection.commit()
             myConnection.close()
