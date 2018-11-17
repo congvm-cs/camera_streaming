@@ -17,7 +17,8 @@ def say_welcome():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/welcome.wav")
     pygame.mixer.music.play()
-    pygame.time.delay(10)
+    while pygame.mixer.get_busy():
+        pygame.time.delay(100)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
@@ -26,7 +27,8 @@ def say_yes():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/comein.wav")
     pygame.mixer.music.play()
-    pygame.time.delay(10)
+    while pygame.mixer.get_busy():
+        pygame.time.delay(100)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
@@ -34,7 +36,8 @@ def say_no():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/invalid.wav")
     pygame.mixer.music.play()
-    pygame.time.delay(10)
+    while pygame.mixer.get_busy():
+        pygame.time.delay(100)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
@@ -49,13 +52,12 @@ def request(code):
     dict_res = eval(str_res)
 
     status = dict_res['status']
-    print(status)
+    print('status: {}'.format(status))
 
     if status == 'false':
         say_no()
     
     if status == 'true':
-        # print("HI")
         say_yes()
     
 
@@ -82,7 +84,7 @@ while(cap.isOpened()):
         # print("str_temp_code: {}".format(str_temp_code))
 
         if (n_codes >= 1) & (str_code != str_temp_code):
-            print("Capture")
+            # print("Capture")
 
             t = Thread(target=request, args=(str_code,))
             t.start()
