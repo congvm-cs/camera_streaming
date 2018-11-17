@@ -83,7 +83,7 @@ def signup():
                           qrcode=_code,
                           usertype=0,
                           money=0,
-                          email=_query_data['email'])
+                          email="")
 
         _response = {
             "status": "true",
@@ -107,7 +107,7 @@ def signup():
 def update_usertype():
     try:
         _query_data = request.json
-        print(_query_data)
+        
         db_handler.update_usertype(username=_query_data['username'],
                           usertype=_query_data['usertype'],
                           email=_query_data['email'])
