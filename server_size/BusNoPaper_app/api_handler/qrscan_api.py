@@ -30,14 +30,14 @@ def generate_qrcode():
 
     _code = __generate()
     try:
-        # if "id" in _query:
-        db_handler.update_qrcode(_query['id'], _code)
+        # Update database
+        db_handler.update_qrcode(_query['username'], _code)
 
         _response = {
             "status": "true",
             "status_message": "",
             "content":{
-                "id": _query['id'],
+                "username": _query['username'],
                 "code": _code
             }
         }
@@ -51,12 +51,3 @@ def generate_qrcode():
             }
         }
         return jsonify(_response)
-
-# @qrscan_bp.route("/qrscan_api/get_code", methods=["POST"])
-# def get_code():
-#     return jsonify({
-#         "hi": "Cong"
-#     })
-
-#==========================================================
-#   API EMBEDDED DEVICE

@@ -11,13 +11,15 @@ user_bp = Blueprint('user_api', __name__)
 
 db_handler = BusNoPaperDB()
 
-#==========================================================
+# ==========================================================
 #   PROCESS FUNCTION
+
+
 def __generate(length=16, chars=string.ascii_letters + string.digits):
     return ''.join([choice(chars) for i in range(length)])
 
 
-#==========================================================
+# ==========================================================
 #   API MOBILE
 @user_bp.route("/api/signin", methods=["POST"])
 def signin():
@@ -28,15 +30,15 @@ def signin():
         # print(user_data['username'])
 
         _query_data = db_handler.query_info(user_data['username'])
-        
+
         # print(len(_query_data))
 
-        if len(_query_data) ==  0:
+        if len(_query_data) == 0:
             # Not exist
             _response = {
                 "status": "false",
                 "status_message": "not exist",
-                "content":{
+                "content": {
                 }
             }
         else:
@@ -45,7 +47,7 @@ def signin():
                 _response = {
                     "status": "true",
                     "status_message": "",
-                    "content":{
+                    "content": {
                         "qrcode": _query_data[0][3],
                         "usertype": _query_data[0][4],
                         "money": _query_data[0][5],
@@ -56,19 +58,18 @@ def signin():
                 _response = {
                     "status": "false",
                     "status_message": "wrong password",
-                    "content":{
+                    "content": {
                     }
                 }
         return jsonify(_response)
     except Exception as e:
         _response = {
-                "status": "false",
-                "status_message": str(e),
-                "content":{
-                }
+            "status": "false",
+            "status_message": str(e),
+            "content": {
             }
+        }
         return jsonify(_response)
-
 
 
 @user_bp.route("/api/signup", methods=["POST"])
@@ -77,32 +78,52 @@ def signup():
         _query_data = request.json
         # Generate QRCODE
         _code = __generate()
-        db_handler.insert(  username=_query_data['username'], 
-                            password=_query_data['password'],
-                            qrcode=_code,
-                            usertype=0, 
-                            money=0,
-                            email=_query_data['email'])
-        
-        print(1)
+        db_handler.insert(username=_query_data['username'],
+                          password=_query_data['password'],
+                          qrcode=_code,
+                          usertype=0,
+                          money=0,
+                          email=_query_data['email'])
+
         _response = {
-                    "status": "true",
-                    "status_message": "register successfully",
-                    "content":{
-                    }
-                }
+            "status": "true",
+            "status_message": "register successfully",
+            "content": {
+            }
+        }
         return jsonify(_response)
 
     except Exception as e:
         _response = {
-                    "status": "false",
-                    "status_message": str(e),
-                    "content":{
-                    }
-                }
+            "status": "false",
+            "status_message": str(e),
+            "content": {
+            }
+        }
         return jsonify(_response)
 
-@user_bp.route("/api/get_user_info", methods=["POST"])
-def get_user_info():
-    pass
 
+@user_bp.route("/api/update_usertype", methods=["POST"])
+def update_usertype():
+    try:
+        _query_data = request.json
+        print(_query_data)
+        db_handler.update_usertype(username=_query_data['username'],
+                          usertype=_query_data['usertype'],
+                          email=_query_data['email'])
+        _response = {
+            "status": "true",
+            "status_message": "update successfully",
+            "content": {
+            }
+        }
+        return jsonify(_response)
+
+    except Exception as e:
+        _response = {
+            "status": "false",
+            "status_message": str(e),
+            "content": {
+            }
+        }
+        return jsonify(_response)
