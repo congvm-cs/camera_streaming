@@ -21,6 +21,8 @@ def recharge():
         
         _query_data = db_handler.query_info(_username)
         
+        print(_query_data)
+
         # Validate Code
         if _request_data['code'] != MOBILEPHONE_CODE:
             _response = {
@@ -56,10 +58,7 @@ def recharge():
 def charge():
     try:
         _request_data = request.json
-
-        
         _code = _request_data['code']
-
         _query_data = db_handler.query_code(_code)
 
         print(_query_data)
@@ -83,7 +82,7 @@ def charge():
                 }
             }
             return jsonify(_response)
-            
+
         else:
             _new_money = int(_query_data[0][5]) - NORMAL_TICKET_FEE if (int(_query_data[0][4]) == 0) else int(
                 _query_data[0][5]) - STUDEN_TICKET_FEE
