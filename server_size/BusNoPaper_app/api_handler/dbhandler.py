@@ -123,7 +123,7 @@ class BusNoPaperDB(object):
         cursor.execute(_sql)
             
         _sql = "SELECT * FROM user          \
-                WHERE username={};".format(username)
+                WHERE username=\"{}\";".format(username)
 
         cursor.execute(_sql)
         _response = cursor.fetchall()

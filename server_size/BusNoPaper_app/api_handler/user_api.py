@@ -17,26 +17,57 @@ def __generate(length=16, chars=string.ascii_letters + string.digits):
     return ''.join([choice(chars) for i in range(length)])
 
 
-def __process_code():
-    pass
-
 #==========================================================
 #   API MOBILE
 @user_bp.route("/api/signin", methods=["POST"])
 def signin():
     try:
+        print('signin')
         user_data = request.json
 
+        # print(user_data['username'])
+
         _query_data = db_handler.query_info(user_data['username'])
+        
+        # print(len(_query_data))
 
         if len(_query_data) ==  0:
             # Not exist
-            pass
+            _response = {
+                "status": "false",
+                "status_message": "not exist",
+                "content":{
+                }
+            }
         else:
             # Exist then check password
-            pass
+            if user_data['password'] == _query_data[0][2]:
+                _response = {
+                    "status": "true",
+                    "status_message": "",
+                    "content":{
+                        "qrcode": _query_data[0][3],
+                        "usertype": _query_data[0][4],
+                        "money": _query_data[0][5],
+                        "email": _query_data[0][6]
+                    }
+                }
+            else:
+                _response = {
+                    "status": "false",
+                    "status_message": "wrong password",
+                    "content":{
+                    }
+                }
+        return jsonify(_response)
     except Exception as e:
-        print(e)
+        _response = {
+                "status": "false",
+                "status_message": str(e),
+                "content":{
+                }
+            }
+        return jsonify(_response)
 
 
 
