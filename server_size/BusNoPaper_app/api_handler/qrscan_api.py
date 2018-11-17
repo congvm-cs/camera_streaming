@@ -51,3 +51,36 @@ def generate_qrcode():
             }
         }
         return jsonify(_response)
+
+
+
+#==========================================================
+#   API EMBEDDED DEVICE
+
+@qrscan_bp.route("/api/validate_code", methods=["POST"])
+def validate_code():
+    _query = request.json
+
+    try:
+        # Update database
+        _code = _query['code']
+        db_handler.update_qrcode(_query['username'], _code)
+
+        _response = {
+            "status": "true",
+            "status_message": "",
+            "content":{
+                "username": _query['username'],
+                "code": _code
+            }
+        }
+
+        return jsonify(_response)
+    except Exception as e:    
+        _response = {
+            "status": "false",
+            "status_message": str(e),
+            "content":{
+            }
+        }
+        return jsonify(_response)

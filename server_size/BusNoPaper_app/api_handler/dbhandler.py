@@ -125,7 +125,6 @@ class BusNoPaperDB(object):
         myConnection.close()
         return _response
 
-
     def update_usertype(self, username, usertype, email=""):
         try:
             myConnection = pymysql.connect(host=self.hostname,
@@ -148,3 +147,20 @@ class BusNoPaperDB(object):
             myConnection.close()
         except:
             raise('Insert fail')
+
+    def query_code(self, code):
+        myConnection = pymysql.connect(host=self.hostname,
+                                       user=self.username,
+                                       passwd=self.password)
+
+        cursor = myConnection.cursor()
+        _sql = "USE busnopaper_db"
+        cursor.execute(_sql)
+
+        _sql = "SELECT * FROM user          \
+                WHERE qrcode=\"{}\";".format(code)
+
+        cursor.execute(_sql)
+        _response = cursor.fetchall()
+        myConnection.close()
+        return _response

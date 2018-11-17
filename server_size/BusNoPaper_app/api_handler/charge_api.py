@@ -57,9 +57,19 @@ def charge():
     try:
         _request_data = request.json
 
-        _username = _request_data['username']
-        _query_data = db_handler.query_info(_username)
+        _code = _request_data['code']
+
+        _query_data = db_handler.query_code(_code)
+
         # Check usertype
+        if len(_query_data) == 0:
+            _response = {
+                "status": "false",
+                "status_message": "Invalid QRCode",
+                "content": {
+                }
+            }
+            return jsonify(_response)
 
         # Validate money
         if ((_query_data[0][4] == 0) & (_query_data[0][5] < NORMAL_TICKET_FEE)) | ((_query_data[0][4] == 1) & (_query_data[0][5] < STUDEN_TICKET_FEE)):
@@ -76,7 +86,7 @@ def charge():
                 _query_data[0][5]) - STUDEN_TICKET_FEE
 
             # Update money in DB
-            db_handler.update_money(_username, _new_money)
+            db_handler.update_money(_query_data[0][1], _new_money)
             _response = {
                 "status": "true",
                 "status_message": "Charged",
