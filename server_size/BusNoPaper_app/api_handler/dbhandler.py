@@ -49,12 +49,11 @@ class BusNoPaperDB(object):
             raise('Insert fail')
 
 
-    def update_password(self, id, password):
+    def update_password(self, username, password):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
-                                            passwd=self.password, 
-                                            database=self.database)
+                                            passwd=self.password)
 
             cursor = myConnection.cursor()
             
@@ -63,7 +62,7 @@ class BusNoPaperDB(object):
             
             _sql = "UPDATE user                     \
                         SET password = \"{}\",      \
-                    WHERE id={};".format(password, id)
+                    WHERE username=\"{}\";".format(password, username)
 
             cursor.execute(_sql)
             myConnection.commit()
@@ -72,7 +71,7 @@ class BusNoPaperDB(object):
             raise('Update fail')
 
 
-    def update_qrcode(self, id, code):
+    def update_qrcode(self, username, code):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
@@ -84,7 +83,7 @@ class BusNoPaperDB(object):
             
             _sql = "UPDATE user                 \
                         SET qrcode = \"{}\"     \
-                    WHERE id={};".format(code, id)
+                    WHERE username=\"{}\";".format(code, username)
             
             cursor.execute(_sql)
             myConnection.commit()
@@ -93,7 +92,7 @@ class BusNoPaperDB(object):
             raise('Update fail')
 
 
-    def update_money(self, id, money):
+    def update_money(self, username, money):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
@@ -105,7 +104,7 @@ class BusNoPaperDB(object):
             
             _sql = "UPDATE user                 \
                         SET money = {},   \
-                    WHERE id={};".format(money, id)
+                    WHERE username=\"{}\";".format(money, username)
 
             cursor.execute(_sql)
             myConnection.commit()
