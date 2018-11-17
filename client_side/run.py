@@ -5,21 +5,17 @@ import requests
 import json
 import time
 import threading
-
-
 from threading import Thread
+
+URL = 'http://10.2.72.39:15000/api/charge'
 
 
 def request(code):
     payload = {'code': code}
     headers = {'content-type': 'application/json'}
-    response = requests.post(url, data=json.dumps(payload), headers=headers)
-    print(response.content)
+    response = requests.post(URL, data=json.dumps(payload), headers=headers)
+    # print(response.content)
 
-    
-
-
-url = 'http://10.2.72.39:15000/api/charge'
 
 qrscanner = QRScanner()
 cap = cv2.VideoCapture(1)
@@ -39,12 +35,12 @@ while(cap.isOpened()):
     ret, frame = cap.read()
 
     if ret == True:
-        # Scan QRCode
         n_codes, str_code = qrscanner.scan_return_code(frame)
         # print("str_code: {}".format(str_code))
         # print("str_temp_code: {}".format(str_temp_code))
 
         if (n_codes >= 1) & (str_code != str_temp_code):
+            print("Capture")
             t = Thread(target=request, args=(str_code,))
             t.start()
             str_temp_code = str_code

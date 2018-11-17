@@ -13,8 +13,6 @@ db_handler = BusNoPaperDB()
 
 # ==========================================================
 #   PROCESS FUNCTION
-
-
 def __generate(length=32, chars=string.ascii_letters + string.digits):
     return ''.join([choice(chars) for i in range(length)])
 
@@ -72,6 +70,8 @@ def signin():
 def signup():
     try:
         _query_data = request.json
+        print(_query_data)
+
         # Generate QRCODE
         _code = __generate()
         db_handler.insert(username=_query_data['username'],
