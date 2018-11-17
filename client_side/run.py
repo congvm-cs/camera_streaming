@@ -84,7 +84,7 @@ while(cap.isOpened()):
         # print("str_temp_code: {}".format(str_temp_code))
 
         if (n_codes >= 1) & (str_code != str_temp_code):
-            # print("Capture")
+            print("Capture")
 
             t = Thread(target=request, args=(str_code,))
             t.start()
