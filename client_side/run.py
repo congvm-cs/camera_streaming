@@ -65,8 +65,8 @@ TIMEOUT = 3
 prev_t = time.time()
 
 # Welcome
-# t = Thread(target=say_welcome, args=())
-# t.start()
+t = Thread(target=say_welcome, args=())
+t.start()
 
 while(cap.isOpened()):
     ret, frame = cap.read()
@@ -91,9 +91,9 @@ while(cap.isOpened()):
 
         # break
         # qrscanner.scan_return_code(frame)
-        cv2.imshow('frame', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        # cv2.imshow('frame', frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
     else:
         break
 
