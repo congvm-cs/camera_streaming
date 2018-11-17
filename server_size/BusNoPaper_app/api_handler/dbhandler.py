@@ -13,21 +13,19 @@ class BusNoPaperDB(object):
         self.username = 'root'
         self.password = ''
         self.database = 'busnopaper_db'
-
-    
-    def gen_QRcode2(self, length=16, chars=string.ascii_letters + string.digits):
-        return ''.join([choice(chars) for i in range(length)])
-
+        
 
     def insert(self, username, password, qrcode, usertype=0, money=0, email=None):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
-                                            passwd=self.password, 
-                                            database=self.database)
-
+                                            passwd=self.password)
+            
             cursor = myConnection.cursor()
-
+            
+            _sql = "USE busnopaper_db"
+            cursor.execute(_sql)
+            
             _sql = "INSERT INTO user( \
                             id, \
                             username, \
@@ -59,6 +57,10 @@ class BusNoPaperDB(object):
                                             database=self.database)
 
             cursor = myConnection.cursor()
+            
+            _sql = "USE busnopaper_db"
+            cursor.execute(_sql)
+            
             _sql = "UPDATE user                     \
                         SET password = \"{}\",      \
                     WHERE id={};".format(password, id)
@@ -70,18 +72,20 @@ class BusNoPaperDB(object):
             raise('Update fail')
 
 
-    def update_qrcode(self, id):
+    def update_qrcode(self, id, code):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
-                                            passwd=self.password, 
-                                            database=self.database)
-
+                                            passwd=self.password)
             cursor = myConnection.cursor()
-            _sql = "UPDATE user                 \
-                        SET qrcode = \"{}\",   \
-                    WHERE id={};".format(self.gen_QRcode2(), id)
 
+            _sql = "USE busnopaper_db"
+            cursor.execute(_sql)
+            
+            _sql = "UPDATE user                 \
+                        SET qrcode = \"{}\"     \
+                    WHERE id={};".format(code, id)
+            
             cursor.execute(_sql)
             myConnection.commit()
             myConnection.close()
@@ -93,10 +97,12 @@ class BusNoPaperDB(object):
         try:
             myConnection = pymysql.connect( host=self.hostname, 
                                             user=self.username, 
-                                            passwd=self.password, 
-                                            database=self.database)
+                                            passwd=self.password)
 
             cursor = myConnection.cursor()
+            _sql = "USE busnopaper_db"
+            cursor.execute(_sql)
+            
             _sql = "UPDATE user                 \
                         SET money = {},   \
                     WHERE id={};".format(money, id)
@@ -107,15 +113,17 @@ class BusNoPaperDB(object):
         except:
             raise('Update fail')
 
-    def query_info(self, id):
+    def query_info(self, username):
         myConnection = pymysql.connect( host=self.hostname, 
                                         user=self.username, 
-                                        passwd=self.password, 
-                                        database=self.database)
+                                        passwd=self.password)
 
         cursor = myConnection.cursor()
+        _sql = "USE busnopaper_db"
+        cursor.execute(_sql)
+            
         _sql = "SELECT * FROM user          \
-                WHERE id={};".format(id)
+                WHERE username={};".format(username)
 
         cursor.execute(_sql)
         _response = cursor.fetchall()
