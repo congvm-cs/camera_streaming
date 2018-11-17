@@ -47,11 +47,12 @@ def request(code):
 
     status = dict_res['status']
     print(status)
+
     if status == 'false':
         say_no()
     
     if status == 'true':
-	print("HI")
+        # print("HI")
         say_yes()
     
 
