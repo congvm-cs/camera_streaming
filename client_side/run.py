@@ -17,6 +17,7 @@ def say_welcome():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/welcome.wav")
     pygame.mixer.music.play()
+    pygame.time.delay(10)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
@@ -25,6 +26,7 @@ def say_yes():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/comein.wav")
     pygame.mixer.music.play()
+    pygame.time.delay(10)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
@@ -32,6 +34,7 @@ def say_no():
     pygame.mixer.init()
     pygame.mixer.music.load("./audios/invalid.wav")
     pygame.mixer.music.play()
+    pygame.time.delay(10)
     # while pygame.mixer.music.get_busy() == True:
     #     continue
 
