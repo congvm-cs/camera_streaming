@@ -35,7 +35,7 @@ def recharge():
             db_handler.update_money(_username, _new_money)
             _response = {
                 "status": "true",
-                "status_message": "Charged",
+                "status_message": "charged",
                 "content": {
                     "money": _new_money
                 }
@@ -57,10 +57,13 @@ def charge():
     try:
         _request_data = request.json
 
+        
         _code = _request_data['code']
 
         _query_data = db_handler.query_code(_code)
 
+        print(_query_data)
+        
         # Check usertype
         if len(_query_data) == 0:
             _response = {
@@ -79,8 +82,8 @@ def charge():
                 "content": {
                 }
             }
-
             return jsonify(_response)
+            
         else:
             _new_money = int(_query_data[0][5]) - NORMAL_TICKET_FEE if (int(_query_data[0][4]) == 0) else int(
                 _query_data[0][5]) - STUDEN_TICKET_FEE

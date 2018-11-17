@@ -15,4 +15,4 @@ app.register_blueprint(qrscan_bp)
 app.register_blueprint(charge_bp)
 app.register_blueprint(user_bp)
 
-db_handler = BusNoPaperDB()
+

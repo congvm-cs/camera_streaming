@@ -15,7 +15,7 @@ db_handler = BusNoPaperDB()
 #   PROCESS FUNCTION
 
 
-def __generate(length=16, chars=string.ascii_letters + string.digits):
+def __generate(length=32, chars=string.ascii_letters + string.digits):
     return ''.join([choice(chars) for i in range(length)])
 
 
@@ -24,11 +24,7 @@ def __generate(length=16, chars=string.ascii_letters + string.digits):
 @user_bp.route("/api/signin", methods=["POST"])
 def signin():
     try:
-        print('signin')
         user_data = request.json
-
-        # print(user_data['username'])
-
         _query_data = db_handler.query_info(user_data['username'])
 
         # print(len(_query_data))
@@ -81,9 +77,9 @@ def signup():
         db_handler.insert(username=_query_data['username'],
                           password=_query_data['password'],
                           qrcode=_code,
-                          usertype=0,
+                          usertype=_query_data['usertype'],
                           money=0,
-                          email="")
+                          email=_query_data['email'])
 
         _response = {
             "status": "true",
@@ -107,14 +103,44 @@ def signup():
 def update_usertype():
     try:
         _query_data = request.json
-        
+
         db_handler.update_usertype(username=_query_data['username'],
-                          usertype=_query_data['usertype'],
-                          email=_query_data['email'])
+                                   usertype=_query_data['usertype'],
+                                   email=_query_data['email'])
         _response = {
             "status": "true",
             "status_message": "update successfully",
             "content": {
+            }
+        }
+        return jsonify(_response)
+
+    except Exception as e:
+        _response = {
+            "status": "false",
+            "status_message": str(e),
+            "content": {
+            }
+        }
+        return jsonify(_response)
+
+
+@user_bp.route("/api/request_user_info", methods=["POST"])
+def request_user_info():
+    try:
+        _query_data = request.json
+
+        _user_data = db_handler.query_info(_query_data['username'])
+
+        _response = {
+            "status": "true",
+            "status_message": "",
+            "content": {
+                "username":_user_data[0][1],
+                "qrcode": _user_data[0][3],
+                "usertype": _user_data[0][4],
+                "money": _user_data[0][5],
+                "email": _user_data[0][6]
             }
         }
         return jsonify(_response)

@@ -36,14 +36,10 @@ class QRScanner(object):
 
         # find the codes in the frame and decode each of the codes
         codes = pyzbar.decode(frame)
-
+        code = ""
         # loop over the detected codes
-        list_ret_code = []
-        for code in codes:
-            # the code data is a bytes object so if we want to draw it
-            # on our output image we need to convert it to a string first
-            codeData = code.data.decode("utf-8")
-            # codeType = code.type
-            list_ret_code.append(codeData)
+        # list_ret_code = []
+        if len(codes) >= 1:
+            code = codes[0].data.decode("utf-8")
             
-        return list_ret_code
+        return len(codes), code
