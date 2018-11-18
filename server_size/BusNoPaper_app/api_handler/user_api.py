@@ -70,7 +70,7 @@ def signin():
 def signup():
     try:
         _query_data = request.json
-        print(_query_data)
+        # print(_query_data)
 
         # Generate QRCODE
         _code = __generate()

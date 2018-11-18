@@ -9,6 +9,7 @@ NORMAL_TICKET_FEE = 6000
 STUDEN_TICKET_FEE = 2000
 
 MOBILEPHONE_CODE = "makerthon2018"
+# MOBILEPHONE_CODE = "1"
 MONEY_RECHARGE = 50000
 
 
@@ -21,10 +22,10 @@ def recharge():
         
         _query_data = db_handler.query_info(_username)
         
-        print(_query_data)
+        # print(_query_data)
 
         # Validate Code
-        if _request_data['code'] != MOBILEPHONE_CODE:
+        if str(_request_data['code']) != MOBILEPHONE_CODE:
             _response = {
                 "status": "false",
                 "status_message": "wrong code",
@@ -61,7 +62,7 @@ def charge():
         _code = _request_data['code']
         _query_data = db_handler.query_code(_code)
 
-        print(_query_data)
+        # print(_query_data)
         
         # Check usertype
         if len(_query_data) == 0:
